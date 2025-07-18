@@ -37,13 +37,19 @@ function LoopsNewsletterForm() {
         setStatus("error");
         setErrorMsg(data.message || res.statusText);
       }
-    } catch (error: any) {
-      if (error.message === "Failed to fetch") {
-        setStatus("rateLimit");
-        setErrorMsg("Too many signups, please try again in a little while");
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        if (error.message === "Failed to fetch") {
+          setStatus("rateLimit");
+          setErrorMsg("Too many signups, please try again in a little while");
+        } else {
+          setStatus("error");
+          setErrorMsg(error.message || "Oops! Something went wrong, please try again");
+          localStorage.setItem("loops-form-timestamp", "");
+        }
       } else {
         setStatus("error");
-        setErrorMsg(error.message || "Oops! Something went wrong, please try again");
+        setErrorMsg("Oops! Something went wrong, please try again");
         localStorage.setItem("loops-form-timestamp", "");
       }
     }
@@ -58,7 +64,7 @@ function LoopsNewsletterForm() {
     <div className="newsletter-form-container flex flex-col items-center w-full">
       {status === "success" ? (
         <div className="newsletter-success flex flex-col items-center justify-center w-full">
-          <p className="newsletter-success-message text-black text-sm" style={{ fontFamily: "Inter, sans-serif" }}>Thanks! We'll be in touch!</p>
+          <p className="newsletter-success-message text-black text-sm" style={{ fontFamily: "Inter, sans-serif" }}>Thanks! We&apos;ll be in touch!</p>
           <button
             type="button"
             className="newsletter-back-button"
@@ -164,7 +170,7 @@ function LoopsNewsletterForm() {
                 display: "flex",
               }}
             >
-              Join Waitlist
+              Send me 10 free leads every week
             </button>
           )}
           {(status === "error" || status === "rateLimit") && (
