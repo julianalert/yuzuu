@@ -5,7 +5,7 @@ import Image from 'next/image'
 import { Tab, TabGroup, TabList, TabPanel, TabPanels } from '@headlessui/react'
 import clsx from 'clsx'
 
-import { Container } from '@/components/Container'
+import { Container } from '../components/Container'
 import backgroundImage from '@/images/background-features.jpg'
 import screenshotExpenses from '@/images/screenshots/expenses.png'
 import screenshotPayroll from '@/images/screenshots/payroll.png'
@@ -40,12 +40,12 @@ const features = [
 ]
 
 export function PrimaryFeatures() {
-  let [tabOrientation, setTabOrientation] = useState<'horizontal' | 'vertical'>(
+  const [tabOrientation, setTabOrientation] = useState<'horizontal' | 'vertical'>(
     'horizontal',
   )
 
   useEffect(() => {
-    let lgMediaQuery = window.matchMedia('(min-width: 1024px)')
+    const lgMediaQuery = window.matchMedia('(min-width: 1024px)')
 
     function onMediaQueryChange({ matches }: { matches: boolean }) {
       setTabOrientation(matches ? 'vertical' : 'horizontal')
