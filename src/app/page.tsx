@@ -3,6 +3,7 @@
 import { useState, useRef } from 'react';
 import { Dialog } from '@headlessui/react';
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
+import { supabase } from '../utils/supabaseClient';
 
 const navigation = [
   { name: 'Product', href: '#' },
@@ -46,7 +47,7 @@ export default function OnboardingPage() {
     const emailValue = emailRef.current?.value || "";
     const websiteValue = websiteRef.current?.value || "";
 
-    // Prepare the form body with the custom property
+    // Prepare the form body with the custom property for Loops.so
     const formBody = `userGroup=Waiting%20List&mailingLists=&email=${encodeURIComponent(emailValue)}&url=${encodeURIComponent(websiteValue)}`;
 
     try {
@@ -58,6 +59,8 @@ export default function OnboardingPage() {
           headers: { "Content-Type": "application/x-www-form-urlencoded" },
         }
       );
+      // Insert into Supabase
+      await supabase.from('campaign').insert([{ email: emailValue, url: websiteValue }]);
       setSubmitted(true);
       // Optionally show a thank you message or next step
     } catch (error) {
