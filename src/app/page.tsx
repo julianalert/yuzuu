@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import LoopsNewsletterForm from "./LoopsNewsletterForm";
+import Link from "next/link";
 
 export default function Home() {
   return (
@@ -13,13 +14,15 @@ export default function Home() {
     >
       {/* Header */}
       <header className="w-full py-4 flex justify-center items-center border-b border-gray-100">
-        <span className="text-2xl font-bold tracking-tight">Yuzuu</span>
+        <Link href="/" className="text-2xl font-bold tracking-tight hover:opacity-80 transition-opacity" style={{ textDecoration: 'none' }}>
+          Yuzuu
+        </Link>
       </header>
 
       {/* Hero Section */}
       <main className="flex flex-col items-center flex-1 justify-center text-center px-4 mt-16 gap-6">
-        <h1 className="text-3xl md:text-5xl font-extrabold mb-0.5 mt-8">Wake up to warm leads, every day</h1>
-        <p className="text-lg md:text-2xl text-gray-600 mb-1 max-w-2xl">We send you 3 qualified B2B prospects tailored to your SaaS every morning, for free.</p>
+        <h1 className="text-3xl md:text-5xl font-extrabold mb-0.5 mt-8">Find Clients For Your B2B SaaS</h1>
+        <p className="text-lg md:text-2l text-gray-600 mb-1 max-w-2xl -mt-2">Every morning, get 3 enriched, qualified prospects showing high buying intent.        <br />Perfectly matched to your ICP. Handpicked. 100% free.</p>
         <LoopsNewsletterForm />
         <div className="mb-8" />
         {/* Image Placeholder replaced with actual image */}

@@ -170,7 +170,7 @@ function LoopsNewsletterForm() {
                 display: "flex",
               }}
             >
-              Get the warm leads for free
+              Get the free leads
             </button>
           )}
           {(status === "error" || status === "rateLimit") && (
