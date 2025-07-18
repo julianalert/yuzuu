@@ -170,7 +170,7 @@ function LoopsNewsletterForm() {
                 display: "flex",
               }}
             >
-              Send me 10 free leads every week
+              Get the free leads
             </button>
           )}
           {(status === "error" || status === "rateLimit") && (

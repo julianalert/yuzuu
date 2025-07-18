@@ -5,7 +5,12 @@ import LoopsNewsletterForm from "./LoopsNewsletterForm";
 
 export default function Home() {
   return (
-    <div className="min-h-screen flex flex-col justify-between items-center bg-white">
+    <div
+      className="min-h-screen flex flex-col justify-between items-center"
+      style={{
+        background: "radial-gradient(ellipse 80% 60% at 50% 0%, #f3f4f8 60%, #fff 100%)"
+      }}
+    >
       {/* Header */}
       <header className="w-full py-4 flex justify-center items-center border-b border-gray-100">
         <span className="text-2xl font-bold tracking-tight">Yuzuu</span>
@@ -13,8 +18,8 @@ export default function Home() {
 
       {/* Hero Section */}
       <main className="flex flex-col items-center flex-1 justify-center text-center px-4 mt-16 gap-6">
-        <h1 className="text-3xl md:text-5xl font-extrabold mb-0.5 mt-8">New clients for your B2B SaaS on AutoPilot</h1>
-        <p className="text-lg md:text-2xl text-gray-600 mb-1 max-w-2xl">Every morning, start the day with 3 new leads in your inbox.</p>
+        <h1 className="text-3xl md:text-5xl font-extrabold mb-0.5 mt-8">Wake up to warm leads, every day</h1>
+        <p className="text-lg md:text-2xl text-gray-600 mb-1 max-w-2xl">We send you 3 qualified B2B prospects tailored to your SaaS every morning, for free.</p>
         <LoopsNewsletterForm />
         <div className="mb-8" />
         {/* Image Placeholder replaced with actual image */}
