@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef } from 'react';
+import { useState } from 'react';
 import { Dialog } from '@headlessui/react';
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
 
@@ -26,64 +26,50 @@ const footerNavigation = [
 
 export default function OnboardingPage() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [step, setStep] = useState<'website' | 'email'>('website');
-  const [transitioning, setTransitioning] = useState(false);
-  const websiteRef = useRef<HTMLInputElement>(null);
-  const emailRef = useRef<HTMLInputElement>(null);
-  const [submitted, setSubmitted] = useState(false);
-
-  const handleWebsiteSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setTransitioning(true);
-    setTimeout(() => {
-      setStep('email');
-      setTransitioning(false);
-    }, 300);
-  };
-
-  const handleEmailSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const emailValue = emailRef.current?.value || "";
-    const websiteValue = websiteRef.current?.value || "";
-
-    // Prepare the form body with the custom property
-    const formBody = `userGroup=Waiting%20List&mailingLists=&email=${encodeURIComponent(emailValue)}&url=${encodeURIComponent(websiteValue)}`;
-
-    try {
-      await fetch(
-        "https://app.loops.so/api/newsletter-form/cmakxd8pd0tz8rgtrm7ue7kzl",
-        {
-          method: "POST",
-          body: formBody,
-          headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        }
-      );
-      setSubmitted(true);
-      // Optionally show a thank you message or next step
-    } catch (error) {
-      // Optionally handle error
-    }
-  };
 
   return (
     <div className="bg-white">
-      <header className="bg-white">
-        <nav aria-label="Global" className="mx-auto flex max-w-7xl items-center justify-center p-6 lg:px-8">
-          <a href="#" className="-m-1.5 p-1.5">
-            <span className="sr-only">Yuzuu</span>
-            <img
-              alt=""
-              src="/yuzuu.svg"
-              className="h-8 w-auto"
-            />
-          </a>
+      <header className="absolute inset-x-0 top-0 z-50">
+        <nav aria-label="Global" className="flex items-center justify-between p-6 lg:px-8">
+          <div className="flex lg:flex-1">
+            <a href="#" className="-m-1.5 p-1.5">
+              <span className="sr-only">Your Company</span>
+              <img
+                alt=""
+                src="https://tailwindcss.com/plus-assets/img/logos/mark.svg?color=indigo&shade=600"
+                className="h-8 w-auto"
+              />
+            </a>
+          </div>
+          <div className="flex lg:hidden">
+            <button
+              type="button"
+              onClick={() => setMobileMenuOpen(true)}
+              className="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700"
+            >
+              <span className="sr-only">Open main menu</span>
+              <Bars3Icon aria-hidden="true" className="size-6" />
+            </button>
+          </div>
+          <div className="hidden lg:flex lg:gap-x-12">
+            {navigation.map((item) => (
+              <a key={item.name} href={item.href} className="text-sm/6 font-semibold text-gray-900">
+                {item.name}
+              </a>
+            ))}
+          </div>
+          <div className="hidden lg:flex lg:flex-1 lg:justify-end">
+            <a href="#" className="text-sm/6 font-semibold text-gray-900">
+              Log in <span aria-hidden="true">&rarr;</span>
+            </a>
+          </div>
         </nav>
         <Dialog open={mobileMenuOpen} onClose={setMobileMenuOpen} className="lg:hidden">
           <div className="fixed inset-0 z-50" />
           <Dialog.Panel className="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto bg-white p-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
             <div className="flex items-center justify-between">
               <a href="#" className="-m-1.5 p-1.5">
-                <span className="sr-only">Yuzuu</span>
+                <span className="sr-only">Your Company</span>
                 <img
                   alt=""
                   src="https://tailwindcss.com/plus-assets/img/logos/mark.svg?color=indigo&shade=600"
@@ -126,7 +112,7 @@ export default function OnboardingPage() {
         </Dialog>
       </header>
 
-      <div className="relative isolate pt-0">
+      <div className="relative isolate pt-14">
         <div
           aria-hidden="true"
           className="absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-80"
@@ -142,7 +128,7 @@ export default function OnboardingPage() {
         <div className="py-24 sm:py-32 lg:pb-40">
           <div className="mx-auto max-w-7xl px-6 lg:px-8">
             <div className="mx-auto max-w-2xl text-center">
-              <h1 className="text-5xl font-semibold tracking-tight text-balance text-gray-900 sm:text-7xl -mt-4">
+              <h1 className="text-5xl font-semibold tracking-tight text-balance text-gray-900 sm:text-7xl">
               Find Clients For Your B2B SaaS
               </h1>
               <p className="mt-8 text-lg font-medium text-pretty text-gray-500 sm:text-xl/8">
@@ -164,13 +150,8 @@ export default function OnboardingPage() {
                   </>
                 )}
                 {/* Inserted input form and button */}
-                <div className="w-full max-w-md relative min-h-[56px]">
-                  {/* Website Form */}
-                  <form
-                    onSubmit={handleWebsiteSubmit}
-                    className={`absolute left-0 top-0 w-full flex gap-x-4 transition-opacity duration-300 ${step === 'website' && !transitioning ? 'opacity-100 z-10' : 'opacity-0 z-0 pointer-events-none'}`}
-                    style={{ willChange: 'opacity' }}
-                  >
+                <form className="w-full max-w-md">
+                  <div className="flex gap-x-4">
                     <label htmlFor="website-url" className="sr-only">
                       Website URL
                     </label>
@@ -182,48 +163,15 @@ export default function OnboardingPage() {
                       placeholder="Enter your website URL"
                       autoComplete="url"
                       className="min-w-0 flex-auto rounded-md bg-white px-3.5 py-2 text-base text-gray-900 border border-gray-300 placeholder:text-gray-400 focus:outline-2 focus:outline-indigo-600 sm:text-sm/6 h-12"
-                      ref={websiteRef}
                     />
                     <button
                       type="submit"
-                      className="flex-none rounded-md bg-gray-900 px-3.5 py-2.5 text-sm font-semibold text-white shadow-xs hover:bg-gray-800 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-900 cursor-pointer h-12"
+                      className="flex-none rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 cursor-pointer h-12"
                     >
                       Continue
                     </button>
-                  </form>
-                  {/* Email Form or Thank You Message */}
-                  {submitted ? (
-                    <div className="absolute left-0 top-0 w-full flex items-center justify-center transition-opacity duration-300 opacity-100 z-10 min-h-[56px]">
-                      <span className="text-lg font-medium text-gray-800 text-center">Thank you! Check your inbox in a few minutes to get your first leads.</span>
-                    </div>
-                  ) : (
-                    <form
-                      onSubmit={handleEmailSubmit}
-                      className={`absolute left-0 top-0 w-full flex gap-x-4 transition-opacity duration-300 ${step === 'email' && !transitioning ? 'opacity-100 z-10' : 'opacity-0 z-0 pointer-events-none'}`}
-                      style={{ willChange: 'opacity' }}
-                    >
-                      <label htmlFor="email-address" className="sr-only">
-                        Email address
-                      </label>
-                      <input
-                        id="email-address"
-                        name="email"
-                        type="email"
-                        required
-                        placeholder="Enter your email"
-                        autoComplete="email"
-                        className="min-w-0 flex-auto rounded-md bg-white px-3.5 py-2 text-base text-gray-900 border border-gray-300 placeholder:text-gray-400 focus:outline-2 focus:outline-indigo-600 sm:text-sm/6 h-12"
-                        ref={emailRef}
-                      />
-                      <button
-                        type="submit"
-                        className="flex-none rounded-md bg-gray-900 px-3.5 py-2.5 text-sm font-semibold text-white shadow-xs hover:bg-gray-800 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-900 cursor-pointer h-12"
-                      >
-                        Get the free leads
-                      </button>
-                    </form>
-                  )}
-                </div>
+                  </div>
+                </form>
               </div>
             </div>
             <div className="mt-16 flow-root sm:mt-24">
@@ -277,4 +225,4 @@ export default function OnboardingPage() {
       </footer>
     </div>
   );
-}
+} 

@@ -5,6 +5,7 @@ function LoopsNewsletterForm() {
   const [status, setStatus] = useState("idle"); // idle, loading, success, error, rateLimit
   const [errorMsg, setErrorMsg] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
+  const formRef = useRef<HTMLFormElement>(null);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -31,7 +32,7 @@ function LoopsNewsletterForm() {
       );
       if (res.ok) {
         setStatus("success");
-        e.currentTarget.reset();
+        formRef.current?.reset();
       } else {
         const data = await res.json();
         setStatus("error");
@@ -92,6 +93,7 @@ function LoopsNewsletterForm() {
           method="POST"
           onSubmit={handleSubmit}
           style={{ width: "100%" }}
+          ref={formRef}
         >
           <input
             className="newsletter-form-input"
