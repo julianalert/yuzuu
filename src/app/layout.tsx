@@ -14,11 +14,11 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "New clients for your B2B SaaS on AutoPilot",
-  description: "Every morning, start the day with 3 new leads in your inbox.",
+  title: "New Clients For Your B2B SaaS on AutoPilot",
+  description: "Every morning, warm up to warm leads.",
   openGraph: {
     title: "New clients for your B2B SaaS on AutoPilot",
-    description: "Every morning, start the day with 3 new leads in your inbox.",
+    description: "Every morning, warm up to warm leads.",
     images: [
       {
         url: "/thumbnail.png",
