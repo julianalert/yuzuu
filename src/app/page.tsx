@@ -144,12 +144,12 @@ export default function OnboardingPage() {
         </div>
         <div className="py-24 sm:py-32 lg:pb-40">
           <div className="mx-auto max-w-7xl px-6 lg:px-8">
-            <div className="mx-auto max-w-2xl text-center">
+            <div className="mx-auto max-w-6xl text-center">
               <h1 className="text-5xl font-semibold tracking-tight text-balance text-gray-900 sm:text-7xl -mt-4">
               Find Clients For Your B2B SaaS
               </h1>
-              <p className="mt-8 text-lg font-medium text-pretty text-gray-500 sm:text-xl/8">
-              Every morning, get 3 enriched, qualified prospects showing high buying intent. Perfectly matched to your ICP. Handpicked. 100% free.
+              <p className="mt-8 text-lg font-medium text-pretty max-w-2xl mx-auto text-gray-500 sm:text-xl/8">
+              Get 3 qualified prospects in your inbox every morning showing high buying intent for your offer. Perfectly matched to your ICP. 100% free.
               </p>
               <div className="mt-10 flex items-center justify-center gap-x-6">
                 {/* Mute original buttons */}
@@ -230,13 +230,13 @@ export default function OnboardingPage() {
               </div>
             </div>
             <div className="mt-16 flow-root sm:mt-24">
-              <div className="-m-2 rounded-xl bg-gray-900/5 p-2 ring-1 ring-gray-900/10 ring-inset lg:-m-4 lg:rounded-2xl lg:p-4">
+              <div className="flex justify-center">
                 <img
-                  alt="App screenshot"
-                  src="https://tailwindcss.com/plus-assets/img/component-images/project-app-screenshot.png"
-                  width={2432}
-                  height={1442}
-                  className="w-[76rem] rounded-md bg-gray-50 shadow-xl ring-1 ring-gray-900/10"
+                  alt="Lead card"
+                  src="/lead-card.webp"
+                  width={900}
+                  height={600}
+                  className="w-[48rem] max-w-full rounded-md shadow-xl ring-1 ring-gray-900/10 mx-auto"
                 />
               </div>
             </div>
