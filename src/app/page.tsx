@@ -149,127 +149,123 @@ function FeaturesSection() {
 
 const tiers = [
   {
-    id: 'freelancer',
-    name: 'Free',
-    price: { monthly: '$0', annually: '$0' },
-    description: 'Just to get started.',
-    features: ['3 leads per day'],
+    name: 'Start',
+    id: 'tier-hobby',
+    href: '/#',
+    priceMonthly: '$0',
+    description: "The perfect plan if you're just getting started with our product.",
+    features: ['3 leads per day', 'Perfectly tailored to your offer', 'Enriched with signals', 'Verified emails & socials'],
     featured: false,
   },
   {
-    id: 'startup',
-    name: 'Startup',
-    price: { monthly: '$47', annually: '$497' },
-    description: 'Get serious about your cold outreach.',
+    name: 'Scale',
+    id: 'tier-enterprise',
+    href: 'mailto:hello@yuzuu.co',
+    priceMonthly: '$47',
+    description: 'To get more sales.',
     features: [
+      'Everything in the free plan',
       '30 leads per day',
-      '30+ hours saved per month',
-      'Highly Qualified Prospects',
-      'Enriched with strong signals',
-      'Outreach Templates',
+      'Personal infrastructure setup',
+      'Dedicated support',
+      'Outreach templates',
     ],
     featured: true,
   },
-  {
-    id: 'enterprise',
-    name: 'Done For You',
-    price: { monthly: '$2,999', annually: '$29,990' },
-    description: 'Absolutely everything I can do for you.',
-    features: [
-      '12 months unlimited consulting',
-      'We setup your entire cold email + social media infrastructure',
-      'We deliver as many leads as you wish',
-      'We setup the v1 of your campaigns and we review them together',
-      'You continue running the campaigns, with full control over them and let us know whenever you need help',
-    ],
-    featured: false,
-  },
 ];
 
-function PricingTiers() {
+function classNames(...classes: string[]) {
+  return classes.filter(Boolean).join(' ');
+}
+
+function PricingComponent() {
   return (
-    <form className="group/tiers bg-gray-900 py-24 sm:py-32">
-      <div className="mx-auto max-w-7xl px-6 lg:px-8">
-        <div className="mx-auto max-w-4xl text-center">
-          <h2 className="text-base/7 font-semibold text-indigo-400">Pricing</h2>
-          <p className="mt-2 text-5xl font-semibold tracking-tight text-balance text-white sm:text-6xl">
-            Start booking demos for real
-          </p>
-        </div>
-        <p className="mx-auto mt-6 max-w-2xl text-center text-lg font-medium text-pretty text-gray-400 sm:text-xl/8">
-        Get highly-qualified leads delivered to your inbox every morning, tailored to your offer, and ready to convert.
-        </p>
-        <div className="mt-16 flex justify-center">
-          <fieldset aria-label="Payment frequency">
-            <div className="grid grid-cols-2 gap-x-1 rounded-full bg-white/5 p-1 text-center text-xs/5 font-semibold text-white">
-              <label className="group relative rounded-full px-2.5 py-1 has-checked:bg-indigo-500">
-                <input
-                  defaultValue="monthly"
-                  defaultChecked
-                  name="frequency"
-                  type="radio"
-                  className="absolute inset-0 appearance-none rounded-full"
-                />
-                <span className="text-white">Monthly</span>
-              </label>
-              <label className="group relative rounded-full px-2.5 py-1 has-checked:bg-indigo-500">
-                <input
-                  defaultValue="annually"
-                  name="frequency"
-                  type="radio"
-                  className="absolute inset-0 appearance-none rounded-full"
-                />
-                <span className="text-white">Annually</span>
-              </label>
-            </div>
-          </fieldset>
-        </div>
-        <div className="isolate mx-auto mt-10 grid max-w-md grid-cols-1 gap-8 lg:mx-0 lg:max-w-none lg:grid-cols-3">
-          {tiers.map((tier) => (
-            <div
-              key={tier.id}
-              data-featured={tier.featured ? 'true' : undefined}
-              className="group/tier rounded-3xl p-8 ring-1 ring-white/10 data-featured:bg-white/5 data-featured:ring-2 data-featured:ring-indigo-500 xl:p-10"
-            >
-              <div className="flex items-center justify-between gap-x-4">
-                <h3 id={`tier-${tier.id}`} className="text-lg/8 font-semibold text-white">
-                  {tier.name}
-                </h3>
-                <p className="rounded-full bg-indigo-500 px-2.5 py-1 text-xs/5 font-semibold text-white group-not-data-featured/tier:hidden">
-                  Most popular
-                </p>
-              </div>
-              <p className="mt-4 text-sm/6 text-gray-300">{tier.description}</p>
-              <p className="mt-6 flex items-baseline gap-x-1 group-not-has-[[name=frequency][value=monthly]:checked]/tiers:hidden">
-                <span className="text-4xl font-semibold tracking-tight text-white">{tier.price.monthly}</span>
-                <span className="text-sm/6 font-semibold text-gray-300">/month</span>
-              </p>
-              <p className="mt-6 flex items-baseline gap-x-1 group-not-has-[[name=frequency][value=annually]:checked]/tiers:hidden">
-                <span className="text-4xl font-semibold tracking-tight text-white">{tier.price.annually}</span>
-                <span className="text-sm/6 font-semibold text-gray-300">/year</span>
-              </p>
-              <button
-                value={tier.id}
-                name="tier"
-                type="submit"
-                aria-describedby={`tier-${tier.id}`}
-                className="mt-6 block w-full rounded-md bg-white/10 px-3 py-2 text-center text-sm/6 font-semibold text-white group-data-featured/tier:bg-indigo-500 group-data-featured/tier:text-white group-data-featured/tier:shadow-xs hover:bg-white/20 group-data-featured/tier:hover:bg-indigo-400 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white group-data-featured/tier:focus-visible:outline-indigo-500"
-              >
-                Get started
-              </button>
-              <ul role="list" className="mt-8 space-y-3 text-sm/6 text-gray-300 xl:mt-10">
-                {tier.features.map((feature) => (
-                  <li key={feature} className="flex gap-x-3">
-                    <CheckIcon aria-hidden="true" className="h-6 w-5 flex-none text-white" />
-                    {feature}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
-        </div>
+    <div className="relative isolate bg-white px-6 py-24 sm:py-32 lg:px-8">
+      <div aria-hidden="true" className="absolute inset-x-0 -top-3 -z-10 transform-gpu overflow-hidden px-36 blur-3xl">
+        <div
+          style={{
+            clipPath:
+              'polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)',
+          }}
+          className="mx-auto aspect-1155/678 w-288.75 bg-linear-to-tr from-[#ff80b5] to-[#9089fc] opacity-30"
+        />
       </div>
-    </form>
+      <div className="mx-auto max-w-4xl text-center">
+        <h2 className="text-base/7 font-semibold text-indigo-600">Pricing</h2>
+        <p className="mt-2 text-5xl font-semibold tracking-tight text-balance text-gray-900 sm:text-6xl">
+          Get your first 3 leads today
+        </p>
+      </div>
+      <p className="mx-auto mt-6 max-w-2xl text-center text-lg font-medium text-pretty text-gray-600 sm:text-xl/8">
+      Based on your product. Verified. Ready to convert.
+      </p>
+      <div className="mx-auto mt-16 grid max-w-lg grid-cols-1 items-center gap-y-6 sm:mt-20 sm:gap-y-0 lg:max-w-4xl lg:grid-cols-2">
+        {tiers.map((tier, tierIdx) => (
+          <div
+            key={tier.id}
+            className={classNames(
+              tier.featured ? 'relative bg-gray-900 shadow-2xl' : 'bg-white/60 sm:mx-8 lg:mx-0',
+              tier.featured
+                ? ''
+                : tierIdx === 0
+                  ? 'rounded-t-3xl sm:rounded-b-none lg:rounded-tr-none lg:rounded-bl-3xl'
+                  : 'sm:rounded-t-none lg:rounded-tr-3xl lg:rounded-bl-none',
+              'rounded-3xl p-8 ring-1 ring-gray-900/10 sm:p-10',
+            )}
+          >
+            <h3
+              id={tier.id}
+              className={classNames(tier.featured ? 'text-indigo-400' : 'text-indigo-600', 'text-base/7 font-semibold')}
+            >
+              {tier.name}
+            </h3>
+            <p className="mt-4 flex items-baseline gap-x-2">
+              <span
+                className={classNames(
+                  tier.featured ? 'text-white' : 'text-gray-900',
+                  'text-5xl font-semibold tracking-tight',
+                )}
+              >
+                {tier.priceMonthly}
+              </span>
+              <span className={classNames(tier.featured ? 'text-gray-400' : 'text-gray-500', 'text-base')}>/month</span>
+            </p>
+            <p className={classNames(tier.featured ? 'text-gray-300' : 'text-gray-600', 'mt-6 text-base/7')}>
+              {tier.description}
+            </p>
+            <ul
+              role="list"
+              className={classNames(
+                tier.featured ? 'text-gray-300' : 'text-gray-600',
+                'mt-8 space-y-3 text-sm/6 sm:mt-10',
+              )}
+            >
+              {tier.features.map((feature) => (
+                <li key={feature} className="flex gap-x-3">
+                  <CheckIcon
+                    aria-hidden="true"
+                    className={classNames(tier.featured ? 'text-indigo-400' : 'text-indigo-600', 'h-6 w-5 flex-none')}
+                  />
+                  {feature}
+                </li>
+              ))}
+            </ul>
+            <a
+              href={tier.href}
+              aria-describedby={tier.id}
+              className={classNames(
+                tier.featured
+                  ? 'bg-indigo-500 text-white shadow-xs hover:bg-indigo-400 focus-visible:outline-indigo-500'
+                  : 'text-indigo-600 ring-1 ring-indigo-200 ring-inset hover:ring-indigo-300 focus-visible:outline-indigo-600',
+                'mt-8 block rounded-md px-3.5 py-2.5 text-center text-sm font-semibold focus-visible:outline-2 focus-visible:outline-offset-2 sm:mt-10',
+              )}
+            >
+              Get started today
+            </a>
+          </div>
+        ))}
+      </div>
+    </div>
   );
 }
 
@@ -378,7 +374,7 @@ const testimonials = [
         },
       },
     ],
-  ],*/
+  ],
   /*[
     [
       {
@@ -460,27 +456,26 @@ const faqs = [
 
 function FAQSection() {
   return (
-    <div className="bg-white">
+    <div className="bg-gray-900">
       <div className="mx-auto max-w-7xl px-6 py-24 sm:pt-32 lg:px-8 lg:py-40">
         <div className="lg:grid lg:grid-cols-12 lg:gap-8">
           <div className="lg:col-span-5">
-            <h2 className="text-3xl font-semibold tracking-tight text-pretty text-gray-900 sm:text-4xl">
+            <h2 className="text-3xl font-semibold tracking-tight text-pretty text-white sm:text-4xl">
               Frequently asked questions
             </h2>
-            <p className="mt-4 text-base/7 text-pretty text-gray-600">
-              Can’t find the answer you’re looking for? Reach out to our{' '}
-              <a href="#" className="font-semibold text-indigo-600 hover:text-indigo-500">
-                customer support
+            <p className="mt-4 text-base/7 text-pretty text-gray-300">
+              Can’t find the answer you’re looking for? {' '}
+              <a href="mailto:hello@yuzuu.co" className="font-semibold text-indigo-400 hover:text-indigo-300">
+                Contact us
               </a>{' '}
-              team.
             </p>
           </div>
           <div className="mt-10 lg:col-span-7 lg:mt-0">
             <dl className="space-y-10">
               {faqs.map((faq) => (
                 <div key={faq.id || faq.question}>
-                  <dt className="text-base/7 font-semibold text-gray-900">{faq.question}</dt>
-                  <dd className="mt-2 text-base/7 text-gray-600">{faq.answer}</dd>
+                  <dt className="text-base/7 font-semibold text-white">{faq.question}</dt>
+                  <dd className="mt-2 text-base/7 text-gray-300">{faq.answer}</dd>
                 </div>
               ))}
             </dl>
@@ -489,10 +484,6 @@ function FAQSection() {
       </div>
     </div>
   );
-}
-
-function classNames(...classes: string[]) {
-  return classes.filter(Boolean).join(' ');
 }
 
 function TestimonialsSection() {
@@ -583,6 +574,47 @@ function TestimonialsSection() {
           ))}
         </div>
       </div>
+    </div>
+  );
+}
+
+function BoostCTA() {
+  return (
+    <div className="relative isolate overflow-hidden bg-gray-900">
+      <div className="px-6 py-24 sm:px-6 sm:py-32 lg:px-8">
+        <div className="mx-auto max-w-2xl text-center">
+          <h2 className="text-4xl font-semibold tracking-tight text-balance text-white sm:text-5xl">
+          Start getting better leads tomorrow morning
+          </h2>
+          <p className="mx-auto mt-6 max-w-xl text-lg/8 text-pretty text-gray-300">
+          I built this because I was tired of cold scraping and spending more time on spreadsheets than customers. If that’s you too, try the tool and let it prove itself.
+          </p>
+          <div className="mt-10 flex items-center justify-center gap-x-6">
+            <a
+              href="/#"
+              className="rounded-md bg-white/15 px-3.5 py-2.5 text-sm font-semibold text-white inset-ring inset-ring-white/5 hover:bg-white/20 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+            >
+              Get started
+            </a>
+            {/* <a href="#" className="text-sm/6 font-semibold text-white hover:text-gray-300">
+              Learn more <span aria-hidden="true">→</span>
+            </a> */}
+          </div>
+        </div>
+      </div>
+      <svg
+        viewBox="0 0 1024 1024"
+        aria-hidden="true"
+        className="absolute top-1/2 left-1/2 -z-10 size-256 -translate-x-1/2 mask-[radial-gradient(closest-side,white,transparent)]"
+      >
+        <circle r={512} cx={512} cy={512} fill="url(#8d958450-c69f-4251-94bc-4e091a323369)" fillOpacity="0.7" />
+        <defs>
+          <radialGradient id="8d958450-c69f-4251-94bc-4e091a323369">
+            <stop stopColor="#7775D6" />
+            <stop offset={1} stopColor="#E935C1" />
+          </radialGradient>
+        </defs>
+      </svg>
     </div>
   );
 }
@@ -869,20 +901,10 @@ export default function OnboardingPage() {
          <DeployFeaturesSection />
          {/* <FeaturesSection /> */}
          <TestimonialsSection />
-         {/* <PricingTiers /> */}
-         {/* <FAQSection /> */}
-        <div
-          aria-hidden="true"
-          className="absolute inset-x-0 top-[calc(100%-13rem)] -z-10 transform-gpu overflow-hidden blur-3xl sm:top-[calc(100%-30rem)]"
-        >
-          <div
-            style={{
-              clipPath:
-                'polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)',
-            }}
-            className="relative left-[calc(50%+3rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 bg-gradient-to-tr from-[#ff80b5] to-[#9089fc] opacity-30 sm:left-[calc(50%+36rem)] sm:w-[72.1875rem]"
-          />
-        </div>
+         <BoostCTA />
+         <PricingComponent />
+         <FAQSection />
+        
       </div>
       {/* Footer with social icons */}
       <footer className="relative z-20">
