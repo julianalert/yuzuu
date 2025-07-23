@@ -14,7 +14,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     });
     const data = await loopsRes.json().catch(() => null);
     res.status(loopsRes.status).json(data || { ok: loopsRes.ok });
-  } catch (error: any) {
-    res.status(500).json({ error: error?.message || 'Unknown error' });
+  } catch (error: unknown) {
+    res.status(500).json({ error: error instanceof Error ? error.message : 'Unknown error' });
   }
 } 

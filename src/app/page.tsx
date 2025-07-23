@@ -665,7 +665,7 @@ export default function OnboardingPage() {
               campaign_id: campaignId,
             }),
           });
-        } catch (n8nError) {
+        } catch (n8nError: unknown) {
           console.error('n8n webhook error:', n8nError);
         }
       }
@@ -673,9 +673,9 @@ export default function OnboardingPage() {
       setTimeout(() => {
         router.push(`/leads/${campaignId}`);
       }, 1000);
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Error in handleEmailSubmit:', error);
-      setErrorMsg(error?.message || 'Unknown error');
+      setErrorMsg(error instanceof Error ? error.message : 'Unknown error');
     } finally {
       setLoading(false);
     }

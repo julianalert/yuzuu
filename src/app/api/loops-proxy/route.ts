@@ -16,8 +16,8 @@ export async function POST(req: NextRequest) {
       status: loopsRes.status,
       headers: { 'Content-Type': 'application/json' },
     });
-  } catch (error: any) {
-    return new Response(JSON.stringify({ error: error?.message || 'Unknown error' }), {
+  } catch (error: unknown) {
+    return new Response(JSON.stringify({ error: (error instanceof Error ? error.message : 'Unknown error') }), {
       status: 500,
       headers: { 'Content-Type': 'application/json' },
     });
