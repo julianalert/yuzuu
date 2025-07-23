@@ -118,9 +118,9 @@ export default async function LeadsPage({ params }: { params: { campaignId: stri
               ) : !leads || leads.length === 0 ? (
                 <div className="p-8">No leads found for this campaign.</div>
               ) : (
-                <div className="overflow-x-auto">
+      <div className="overflow-x-auto">
                   <table className="min-w-full divide-y divide-gray-300">
-                    <thead>
+          <thead>
                       <tr>
                         <th scope="col" className="py-3.5 pr-3 pl-4 text-left text-sm font-semibold text-gray-900 sm:pl-0">
                           Lead
@@ -140,21 +140,21 @@ export default async function LeadsPage({ params }: { params: { campaignId: stri
                         <th scope="col" className="relative py-3.5 pr-4 pl-3 sm:pr-0">
                           <span className="sr-only">Edit</span>
                         </th>
-                      </tr>
-                    </thead>
+            </tr>
+          </thead>
                     <tbody className="divide-y divide-gray-200 bg-white">
                       {leads.map((lead: Lead) => (
                         <tr key={lead.id}>
                           <td className="py-5 pr-3 pl-4 text-sm whitespace-nowrap sm:pl-0">
                             <div className="flex items-center">
                               <div className="size-11 shrink-0">
-                                {lead.photo_url ? (
+                  {lead.photo_url ? (
                                   <img alt="" src={lead.photo_url} className="size-11 rounded-full object-cover" />
-                                ) : (
+                  ) : (
                                   <div className="size-11 rounded-full bg-gray-200 flex items-center justify-center text-gray-400 text-xs font-bold">
                                     {lead.full_name ? lead.full_name.split(' ').map((n: string) => n[0]).join('').slice(0,2).toUpperCase() : '?'}
-                                  </div>
-                                )}
+                    </div>
+                  )}
                               </div>
                               <div className="ml-4">
                                 <div className="font-medium text-gray-900">{lead.full_name || '-'}</div>
@@ -164,27 +164,27 @@ export default async function LeadsPage({ params }: { params: { campaignId: stri
                           <td className="px-3 py-5 text-sm whitespace-nowrap text-gray-500">
                             <div className="text-gray-900">{lead.job_title || '-'}</div>
                             <div className="mt-1 text-gray-500">{lead.company_name || '-'}</div>
-                          </td>
+                </td>
                           <td className="px-3 py-5 text-sm whitespace-nowrap text-gray-500">
                             {lead.department || '-'}
-                          </td>
+                </td>
                           <td className="px-3 py-5 text-sm whitespace-nowrap text-gray-500">{lead.lead_email || '-'}</td>
                           <td className="px-3 py-5 text-sm whitespace-nowrap text-gray-500">{lead.role || '-'}</td>
                           <td className="relative py-5 pr-4 pl-3 text-right text-sm font-medium whitespace-nowrap sm:pr-0">
                             <a href="#" className="text-indigo-600 hover:text-indigo-900">
                               Edit<span className="sr-only">, {lead.full_name}</span>
                             </a>
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
               )}
             </div>
           </div>
         </main>
-      </div>
+    </div>
     </>
   );
 } 
