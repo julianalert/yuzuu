@@ -29,6 +29,19 @@ const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
 const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
 const supabase = createClient(supabaseUrl, supabaseKey);
 
+type Lead = {
+  id: string;
+  full_name?: string;
+  job_title?: string;
+  company_name?: string;
+  department?: string;
+  lead_email?: string;
+  role?: string;
+  photo_url?: string;
+  company_website?: string;
+  // add other fields as needed
+};
+
 export default async function LeadsPage({ params }: { params: { campaignId: string } }) {
   const { campaignId } = params;
   const { data: leads, error } = await supabase
@@ -130,7 +143,7 @@ export default async function LeadsPage({ params }: { params: { campaignId: stri
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-gray-200 bg-white">
-                      {leads.map((lead: any) => (
+                      {leads.map((lead: Lead) => (
                         <tr key={lead.id}>
                           <td className="py-5 pr-3 pl-4 text-sm whitespace-nowrap sm:pl-0">
                             <div className="flex items-center">

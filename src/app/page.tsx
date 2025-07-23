@@ -301,7 +301,7 @@ function DeployFeaturesSection() {
     <div className="bg-gray-900 py-24 sm:py-32">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <div className="mx-auto max-w-4xl lg:text-center">
-          <h2 className="text-base/7 font-semibold text-indigo-400">Lead gen shouldn't feel like a second job</h2>
+          <h2 className="text-base/7 font-semibold text-indigo-400">Lead gen shouldn&apos;t feel like a second job</h2>
           <p className="mt-2 text-4xl font-semibold tracking-tight text-pretty text-white sm:text-5xl lg:text-balance">
           Tired of wasting hours chasing leads who’ll never buy?
           </p>
