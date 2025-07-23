@@ -44,16 +44,21 @@ type Lead = {
 
 export default async function LeadsPage({ params }: { params: Promise<{ campaignId: string }> }) {
   const { campaignId } = await params;
+  // Fetch campaign for website URL
+  const { data: campaignData, error: campaignError } = await supabase
+    .from('campaign')
+    .select('url')
+    .eq('id', campaignId)
+    .single();
+  const websiteUrl = campaignData?.url || '';
+
   const { data: leads, error } = await supabase
     .from('leads')
     .select('*')
     .eq('campaign_id', campaignId)
     .order('created_at', { ascending: false });
 
-  let websiteUrl = '';
-  if (leads && leads.length > 0 && leads[0].company_website) {
-    websiteUrl = leads[0].company_website;
-  }
+  const displayUrl = websiteUrl.replace(/^https?:\/\//, '');
 
   return (
     <>
@@ -66,8 +71,8 @@ export default async function LeadsPage({ params }: { params: Promise<{ campaign
                   <div className="flex items-center">
                     <div className="shrink-0">
                       <img
-                        alt="Your Company"
-                        src="https://tailwindcss.com/plus-assets/img/logos/mark.svg?color=indigo&shade=500"
+                        alt="Yuzuu"
+                        src="/icon2.png"
                         className="size-8"
                       />
                     </div>
@@ -104,7 +109,7 @@ export default async function LeadsPage({ params }: { params: Promise<{ campaign
           <header className="py-10">
             <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
               <h1 className="text-3xl font-bold tracking-tight text-white">
-                {websiteUrl ? `Leads for ${websiteUrl}` : 'Leads'}
+                {websiteUrl ? `Leads for ${displayUrl}` : 'Leads'}
               </h1>
             </div>
           </header>
@@ -116,7 +121,15 @@ export default async function LeadsPage({ params }: { params: Promise<{ campaign
               {error ? (
                 <div className="p-8 text-red-600">Error loading leads: {error.message}</div>
               ) : !leads || leads.length === 0 ? (
-                <div className="p-8">No leads found for this campaign.</div>
+                <div className="p-8 flex flex-col items-center justify-center gap-4">
+                  <svg className="animate-spin h-8 w-8 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
+                  </svg>
+                  <div className="text-center text-gray-700 text-lg font-medium max-w-md">
+                    We are getting your leads ready. <br />You will receive them by email in the coming hour. <br />You can close this tab.
+                  </div>
+                </div>
               ) : (
       <div className="overflow-x-auto">
                   <table className="min-w-full divide-y divide-gray-300">

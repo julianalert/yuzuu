@@ -13,6 +13,7 @@ import {
   LockClosedIcon,
   ServerIcon,
 } from '@heroicons/react/20/solid';
+import { useRouter } from 'next/navigation';
 
 const navigation = [
   { name: 'Product', href: '#' },
@@ -593,6 +594,9 @@ export default function OnboardingPage() {
   const websiteRef = useRef<HTMLInputElement>(null);
   const emailRef = useRef<HTMLInputElement>(null);
   const [submitted, setSubmitted] = useState(false);
+  const [errorMsg, setErrorMsg] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
+  const router = useRouter();
 
   const handleWebsiteSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -605,27 +609,75 @@ export default function OnboardingPage() {
 
   const handleEmailSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setErrorMsg(null);
+    setLoading(true);
     const emailValue = emailRef.current?.value || "";
     const websiteValue = websiteRef.current?.value || "";
-
-    // Prepare the form body with the custom property for Loops.so
-    const formBody = `userGroup=Waiting%20List&mailingLists=&email=${encodeURIComponent(emailValue)}&url=${encodeURIComponent(websiteValue)}`;
-
+    if (!emailValue || !websiteValue) {
+      setErrorMsg("Email and website are required.");
+      setLoading(false);
+      return;
+    }
     try {
-      await fetch(
-        "https://app.loops.so/api/newsletter-form/cmakxd8pd0tz8rgtrm7ue7kzl",
+      // Insert into Supabase and get the campaign UUID
+      const { data, error } = await supabase
+        .from('campaign')
+        .insert([{ email: emailValue, url: websiteValue }])
+        .select();
+      if (error) throw error;
+      const campaignId = data && data[0] && data[0].id;
+      if (!campaignId) throw new Error('Campaign ID (uuid) not returned from Supabase');
+
+      // Prepare the JSON payload for Loops.so
+      const payload = {
+        email: emailValue,
+        url: websiteValue,
+        userGroup: "Waiting List",
+        campaign_id: campaignId
+      };
+      console.log('Sending to Loops:', payload);
+
+      const loopsRes = await fetch(
+        "/api/loops-proxy",
         {
           method: "POST",
-          body: formBody,
-          headers: { "Content-Type": "application/x-www-form-urlencoded" },
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
         }
       );
-      // Insert into Supabase
-      await supabase.from('campaign').insert([{ email: emailValue, url: websiteValue }]);
+      if (!loopsRes.ok) {
+        const errText = await loopsRes.text();
+        throw new Error(`Loops API error: ${loopsRes.status} ${errText}`);
+      }
       setSubmitted(true);
-      // Optionally show a thank you message or next step
-    } catch (error) {
-      // Optionally handle error
+      // Trigger n8n webhook (env-based URL)
+      const n8nWebhookUrl = process.env.NEXT_PUBLIC_N8N_WEBHOOK_URL;
+      if (!n8nWebhookUrl) {
+        console.error('N8N webhook URL is not set in NEXT_PUBLIC_N8N_WEBHOOK_URL');
+      } else {
+        try {
+          await fetch(n8nWebhookUrl, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              url: websiteValue,
+              email: emailValue,
+              campaign_id: campaignId,
+            }),
+          });
+        } catch (n8nError) {
+          console.error('n8n webhook error:', n8nError);
+        }
+      }
+      // Show 'Redirecting...' message before redirect
+      setTimeout(() => {
+        router.push(`/leads/${campaignId}`);
+      }, 1000);
+    } catch (error: any) {
+      console.error('Error in handleEmailSubmit:', error);
+      setErrorMsg(error?.message || 'Unknown error');
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -757,8 +809,12 @@ export default function OnboardingPage() {
                   </form>
                   {/* Email Form or Thank You Message */}
                   {submitted ? (
-                    <div className="absolute left-0 top-0 w-full flex items-center justify-center transition-opacity duration-300 opacity-100 z-10 min-h-[56px]">
-                      <span className="text-lg font-medium text-gray-800 text-center">Thank you! Check your inbox in a few minutes to get your first leads.</span>
+                    <div className="absolute left-0 top-0 w-full flex items-center justify-center transition-opacity duration-300 opacity-100 z-10 min-h-[56px] gap-2">
+                      <svg className="animate-spin h-5 w-5 text-gray-800" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
+                      </svg>
+                      <span className="text-lg font-medium text-gray-800 text-center">Redirecting...</span>
                     </div>
                   ) : (
                     <form
@@ -778,13 +834,18 @@ export default function OnboardingPage() {
                         autoComplete="email"
                         className="min-w-0 flex-auto rounded-md bg-white px-3.5 py-2 text-base text-gray-900 border border-gray-300 placeholder:text-gray-400 focus:outline-2 focus:outline-indigo-600 sm:text-sm/6 h-12"
                         ref={emailRef}
+                        disabled={loading}
                       />
                       <button
                         type="submit"
                         className="flex-none rounded-md bg-gray-900 px-3.5 py-2.5 text-sm font-semibold text-white shadow-xs hover:bg-gray-800 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-900 cursor-pointer h-12"
+                        disabled={loading}
                       >
-                        Get the free leads
+                        {loading ? 'Submitting...' : 'Get the free leads'}
                       </button>
+                      {errorMsg && (
+                        <div className="text-red-600 text-sm ml-4 flex items-center">{errorMsg}</div>
+                      )}
                     </form>
                   )}
                 </div>
