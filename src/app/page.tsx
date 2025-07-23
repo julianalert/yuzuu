@@ -14,6 +14,7 @@ import {
   ServerIcon,
 } from '@heroicons/react/20/solid';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 
 const navigation = [
   { name: 'Product', href: '#' },
@@ -590,12 +591,12 @@ function BoostCTA() {
           I built this because I was tired of cold scraping and spending more time on spreadsheets than customers. If that’s you too, try the tool and let it prove itself.
           </p>
           <div className="mt-10 flex items-center justify-center gap-x-6">
-            <a
+            <Link
               href="/#"
               className="rounded-md bg-white/15 px-3.5 py-2.5 text-sm font-semibold text-white inset-ring inset-ring-white/5 hover:bg-white/20 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
             >
               Get started
-            </a>
+            </Link>
             {/* <a href="#" className="text-sm/6 font-semibold text-white hover:text-gray-300">
               Learn more <span aria-hidden="true">→</span>
             </a> */}
