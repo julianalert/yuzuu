@@ -42,8 +42,8 @@ type Lead = {
   // add other fields as needed
 };
 
-export default async function LeadsPage({ params }: { params: { campaignId: string } }) {
-  const { campaignId } = params;
+export default async function LeadsPage({ params }: { params: Promise<{ campaignId: string }> }) {
+  const { campaignId } = await params;
   const { data: leads, error } = await supabase
     .from('leads')
     .select('*')
