@@ -28,7 +28,7 @@ const footerNavigation = [
   {
     name: 'X',
     href: 'https://x.com/notanothermrktr',
-    icon: (props: React.SVGProps<SVGSVGElement>) => (
+    icon: (props) => (
       <svg fill="currentColor" viewBox="0 0 24 24" {...props}>
         <path d="M13.6823 10.6218L20.2391 3H18.6854L12.9921 9.61788L8.44486 3H3.2002L10.0765 13.0074L3.2002 21H4.75404L10.7663 14.0113L15.5685 21H20.8131L13.6819 10.6218H13.6823ZM11.5541 13.0956L10.8574 12.0991L5.31391 4.16971H7.70053L12.1742 10.5689L12.8709 11.5655L18.6861 19.8835H16.2995L11.5541 13.096V13.0956Z" />
       </svg>
@@ -175,7 +175,7 @@ const tiers = [
   },
 ];
 
-function classNames(...classes: string[]) {
+function classNames(...classes) {
   return classes.filter(Boolean).join(' ');
 }
 
@@ -622,16 +622,16 @@ function BoostCTA() {
 
 export default function OnboardingPage() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [step, setStep] = useState<'website' | 'email'>('website');
+  const [step, setStep] = useState('website');
   const [transitioning, setTransitioning] = useState(false);
-  const websiteRef = useRef<HTMLInputElement>(null);
-  const emailRef = useRef<HTMLInputElement>(null);
+  const websiteRef = useRef(null);
+  const emailRef = useRef(null);
   const [submitted, setSubmitted] = useState(false);
-  const [errorMsg, setErrorMsg] = useState<string | null>(null);
+  const [errorMsg, setErrorMsg] = useState(null);
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 
-  const handleWebsiteSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleWebsiteSubmit = (e) => {
     e.preventDefault();
     setTransitioning(true);
     setTimeout(() => {
@@ -640,7 +640,7 @@ export default function OnboardingPage() {
     }, 300);
   };
 
-  const handleEmailSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleEmailSubmit = async (e) => {
     e.preventDefault();
     setErrorMsg(null);
     setLoading(true);
@@ -698,7 +698,7 @@ export default function OnboardingPage() {
               campaign_id: campaignId,
             }),
           });
-        } catch (n8nError: unknown) {
+        } catch (n8nError) {
           console.error('n8n webhook error:', n8nError);
         }
       }
@@ -706,7 +706,7 @@ export default function OnboardingPage() {
       setTimeout(() => {
         router.push(`/leads/${campaignId}`);
       }, 1000);
-    } catch (error: unknown) {
+    } catch (error) {
       console.error('Error in handleEmailSubmit:', error);
       setErrorMsg(error instanceof Error ? error.message : 'Unknown error');
     } finally {

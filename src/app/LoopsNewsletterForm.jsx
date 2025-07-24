@@ -4,10 +4,10 @@ import { useRef, useState } from "react";
 function LoopsNewsletterForm() {
   const [status, setStatus] = useState("idle"); // idle, loading, success, error, rateLimit
   const [errorMsg, setErrorMsg] = useState("");
-  const inputRef = useRef<HTMLInputElement>(null);
-  const formRef = useRef<HTMLFormElement>(null);
+  const inputRef = useRef(null);
+  const formRef = useRef(null);
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const timestamp = Date.now();
     const previousTimestamp = localStorage.getItem("loops-form-timestamp");
@@ -38,7 +38,7 @@ function LoopsNewsletterForm() {
         setStatus("error");
         setErrorMsg(data.message || res.statusText);
       }
-    } catch (error: unknown) {
+    } catch (error) {
       if (error instanceof Error) {
         if (error.message === "Failed to fetch") {
           setStatus("rateLimit");
