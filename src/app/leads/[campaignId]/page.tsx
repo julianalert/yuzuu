@@ -67,8 +67,8 @@ function LocationIcon(props: React.SVGProps<SVGSVGElement>) {
   );
 }
 
-export default async function LeadsPage({ params, searchParams }: { params: Promise<{ campaignId: string }>, searchParams?: { page?: string } }) {
-  const { campaignId } = await params;
+export default async function LeadsPage({ params, searchParams }: { params: { campaignId: string }, searchParams?: { page?: string } }) {
+  const { campaignId } = params;
   const page = searchParams?.page ? parseInt(searchParams.page, 10) : 1;
   const LEADS_PER_PAGE = 100;
   const from = (page - 1) * LEADS_PER_PAGE;
