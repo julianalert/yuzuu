@@ -67,6 +67,7 @@ function LocationIcon(props: React.SVGProps<SVGSVGElement>) {
   );
 }
 
+// Next.js 15: params and searchParams are plain objects, not Promises
 export default async function LeadsPage({ params, searchParams }: { params: { campaignId: string }, searchParams?: { page?: string } }) {
   const { campaignId } = params;
   const page = searchParams?.page ? parseInt(searchParams.page, 10) : 1;
