@@ -75,7 +75,7 @@ export default async function LeadsPage({ params, searchParams }: { params: Prom
   const to = from + LEADS_PER_PAGE - 1;
 
   // Fetch campaign for website URL
-  let { data: campaignData, error: campaignError } = await supabase
+  const { data: campaignData, error: campaignError } = await supabase
     .from('campaign')
     .select('url')
     .eq('id', campaignId)
@@ -83,7 +83,7 @@ export default async function LeadsPage({ params, searchParams }: { params: Prom
   const websiteUrl = campaignData?.url || '';
 
   // Fetch leads with count
-  let { data: leads, error: unknownError, count } = await supabase
+  const { data: leads, error: unknownError, count } = await supabase
     .from('leads')
     .select('*', { count: 'exact' })
     .eq('campaign_id', campaignId)
