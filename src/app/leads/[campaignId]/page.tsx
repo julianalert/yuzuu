@@ -1,6 +1,8 @@
 import { Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react';
 import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline';
 import { createClient } from '@supabase/supabase-js';
+import { cookies } from 'next/headers';
+import { notFound } from 'next/navigation';
 
 const user = {
   name: 'Tom Cook',
@@ -65,23 +67,34 @@ function LocationIcon(props: React.SVGProps<SVGSVGElement>) {
   );
 }
 
-export default async function LeadsPage({ params }: { params: Promise<{ campaignId: string }> }) {
+export default async function LeadsPage({ params, searchParams }: { params: Promise<{ campaignId: string }>, searchParams?: { page?: string } }) {
   const { campaignId } = await params;
+  const page = searchParams?.page ? parseInt(searchParams.page, 10) : 1;
+  const LEADS_PER_PAGE = 100;
+  const from = (page - 1) * LEADS_PER_PAGE;
+  const to = from + LEADS_PER_PAGE - 1;
+
   // Fetch campaign for website URL
-  const { data: campaignData, error: campaignError } = await supabase
+  let { data: campaignData, error: campaignError } = await supabase
     .from('campaign')
     .select('url')
     .eq('id', campaignId)
     .single();
   const websiteUrl = campaignData?.url || '';
 
-  const { data: leads, error } = await supabase
+  // Fetch leads with count
+  let { data: leads, error: unknownError, count } = await supabase
     .from('leads')
-    .select('*')
+    .select('*', { count: 'exact' })
     .eq('campaign_id', campaignId)
-    .order('created_at', { ascending: false });
+    .order('created_at', { ascending: false })
+    .range(from, to);
+  const error = unknownError as unknown;
+
+  if (error || campaignError) return notFound();
 
   const displayUrl = websiteUrl.replace(/^https?:\/\//, '');
+  const totalPages = count ? Math.ceil(count / LEADS_PER_PAGE) : 1;
 
   return (
     <>
@@ -90,6 +103,7 @@ export default async function LeadsPage({ params }: { params: Promise<{ campaign
           <header className="py-10">
             <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
               <h1 className="text-3xl font-bold tracking-tight text-white">
+                {typeof count === 'number' ? `${count} ` : ''}
                 {websiteUrl ? `Leads for ${displayUrl}` : 'Leads'}
               </h1>
             </div>
@@ -100,7 +114,7 @@ export default async function LeadsPage({ params }: { params: Promise<{ campaign
             <div className="rounded-lg bg-white px-5 py-6 shadow-sm sm:px-6">
               {/* Leads Table */}
               {error ? (
-                <div className="p-8 text-red-600">Error loading leads: {error.message}</div>
+                <div className="p-8 text-red-600">Error loading leads: {error instanceof Error ? error.message : 'Unknown error'}</div>
               ) : !leads || leads.length === 0 ? (
                 <div className="p-8 flex flex-col items-center justify-center gap-4">
                   <svg className="animate-spin h-8 w-8 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
@@ -210,6 +224,26 @@ export default async function LeadsPage({ params }: { params: Promise<{ campaign
             </div>
           </div>
         </main>
+        {/* After the table, add pagination controls as links */}
+        <div className="flex justify-center items-center gap-4 mt-6">
+          <a
+            href={`?page=${page - 1}`}
+            className={`px-4 py-2 rounded bg-gray-800 text-white ${page === 1 ? 'opacity-50 pointer-events-none' : ''}`}
+            aria-disabled={page === 1}
+          >
+            Previous
+          </a>
+          <span className="text-gray-700">Page {page} of {totalPages}</span>
+          <a
+            href={`?page=${page + 1}`}
+            className={`px-4 py-2 rounded bg-gray-800 text-white ${page === totalPages ? 'opacity-50 pointer-events-none' : ''}`}
+            aria-disabled={page === totalPages}
+          >
+            Next
+          </a>
+        </div>
+        {/* After the pagination controls, add a div with mb-16 for whitespace */}
+        <div className="mb-16" />
     </div>
     </>
   );
