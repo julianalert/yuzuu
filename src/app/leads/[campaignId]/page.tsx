@@ -39,8 +39,31 @@ type Lead = {
   role?: string;
   photo_url?: string;
   company_website?: string;
+  headline?: string;
+  company_linkedin_url?: string;
+  linkedin_url?: string;
+  country?: string;
+  city?: string;
   // add other fields as needed
 };
+
+// Add LinkedIn SVG icon
+function LinkedInIcon(props: React.SVGProps<SVGSVGElement>) {
+  return (
+    <svg fill="currentColor" viewBox="0 0 24 24" {...props}>
+      <path d="M19 0h-14c-2.76 0-5 2.24-5 5v14c0 2.76 2.24 5 5 5h14c2.76 0 5-2.24 5-5v-14c0-2.76-2.24-5-5-5zm-11 19h-3v-9h3v9zm-1.5-10.28c-.97 0-1.75-.79-1.75-1.75s.78-1.75 1.75-1.75 1.75.79 1.75 1.75-.78 1.75-1.75 1.75zm13.5 10.28h-3v-4.5c0-1.08-.02-2.47-1.5-2.47-1.5 0-1.73 1.17-1.73 2.39v4.58h-3v-9h2.89v1.23h.04c.4-.75 1.38-1.54 2.84-1.54 3.04 0 3.6 2 3.6 4.59v4.72z" />
+    </svg>
+  );
+}
+
+// Add Location SVG icon
+function LocationIcon(props: React.SVGProps<SVGSVGElement>) {
+  return (
+    <svg fill="currentColor" viewBox="0 0 20 20" {...props}>
+      <path fillRule="evenodd" d="M10 2a6 6 0 00-6 6c0 4.418 5.373 9.293 5.601 9.507a1 1 0 001.398 0C10.627 17.293 16 12.418 16 8a6 6 0 00-6-6zm0 8a2 2 0 110-4 2 2 0 010 4z" clipRule="evenodd" />
+    </svg>
+  );
+}
 
 export default async function LeadsPage({ params }: { params: Promise<{ campaignId: string }> }) {
   const { campaignId } = await params;
@@ -64,48 +87,6 @@ export default async function LeadsPage({ params }: { params: Promise<{ campaign
     <>
       <div className="min-h-full">
         <div className="bg-gray-800 pb-32">
-          <Disclosure as="nav" className="bg-gray-800">
-            <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
-              <div className="border-b border-gray-700">
-                <div className="flex h-16 items-center justify-between px-4 sm:px-0">
-                  <div className="flex items-center">
-                    <div className="shrink-0">
-                      <img
-                        alt="Yuzuu"
-                        src="/icon2.png"
-                        className="size-8"
-                      />
-                    </div>
-                    <div className="hidden md:block">
-                      <div className="ml-10 flex items-baseline space-x-4">
-                        {navigation.map((item) => (
-                          <a
-                            key={item.name}
-                            href={item.href}
-                            aria-current={item.current ? 'page' : undefined}
-                            className={classNames(
-                              item.current
-                                ? 'bg-gray-900 text-white'
-                                : 'text-gray-300 hover:bg-gray-700 hover:text-white',
-                              'rounded-md px-3 py-2 text-sm font-medium',
-                            )}
-                          >
-                            {item.name}
-                          </a>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-                  <div className="-mr-2 flex md:hidden">
-                    {/* Hide mobile menu button */}
-                  </div>
-                </div>
-              </div>
-            </div>
-            <DisclosurePanel className="border-b border-gray-700 md:hidden">
-              {/* Hide mobile nav and user menu */}
-            </DisclosurePanel>
-          </Disclosure>
           <header className="py-10">
             <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
               <h1 className="text-3xl font-bold tracking-tight text-white">
@@ -139,19 +120,13 @@ export default async function LeadsPage({ params }: { params: Promise<{ campaign
                           Lead
                         </th>
                         <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
-                          Job & Company
+                          Company
                         </th>
                         <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
-                          Department
+                          Location
                         </th>
                         <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
                           Email
-                        </th>
-                        <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
-                          Role
-                        </th>
-                        <th scope="col" className="relative py-3.5 pr-4 pl-3 sm:pr-0">
-                          <span className="sr-only">Edit</span>
                         </th>
             </tr>
           </thead>
@@ -170,24 +145,62 @@ export default async function LeadsPage({ params }: { params: Promise<{ campaign
                   )}
                               </div>
                               <div className="ml-4">
-                                <div className="font-medium text-gray-900">{lead.full_name || '-'}</div>
+                                <div className="font-medium text-gray-900 flex items-center gap-2">
+                                  {lead.full_name || '-'}
+                                  {lead.linkedin_url && (
+                                    <a href={lead.linkedin_url} target="_blank" rel="noopener noreferrer">
+                                      <LinkedInIcon className="h-4 w-4 text-blue-700 hover:text-blue-800" />
+                                    </a>
+                                  )}
+                                </div>
+                                {lead.job_title && (
+                                  <div className="text-gray-500 text-sm mt-1">
+                                    {lead.job_title.length > 30 ? lead.job_title.slice(0, 30) + '...' : lead.job_title}
+                                  </div>
+                                )}
                               </div>
                             </div>
                           </td>
                           <td className="px-3 py-5 text-sm whitespace-nowrap text-gray-500">
-                            <div className="text-gray-900">{lead.job_title || '-'}</div>
-                            <div className="mt-1 text-gray-500">{lead.company_name || '-'}</div>
-                </td>
+                            <div className="text-gray-900 font-medium">
+                              {lead.company_name
+                                ? lead.company_name.length > 30
+                                  ? lead.company_name.slice(0, 30) + '...'
+                                  : lead.company_name
+                                : '-'}
+                            </div>
+                            <div className="flex items-center gap-2 mt-1">
+                              {lead.company_website ? (
+                                <a
+                                  href={lead.company_website}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="hover:underline"
+                                >
+                                  {lead.company_website.length > 25
+                                    ? lead.company_website.slice(0, 25) + '...'
+                                    : lead.company_website}
+                                </a>
+                              ) : (
+                                <span>-</span>
+                              )}
+                              {lead.company_linkedin_url && (
+                                <a href={lead.company_linkedin_url} target="_blank" rel="noopener noreferrer">
+                                  <LinkedInIcon className="h-4 w-4 text-blue-700 hover:text-blue-800" />
+                                </a>
+                              )}
+                            </div>
+                          </td>
                           <td className="px-3 py-5 text-sm whitespace-nowrap text-gray-500">
-                            {lead.department || '-'}
-                </td>
+                            <div className="flex items-center gap-2 text-gray-900 font-medium">
+                              <LocationIcon className="h-4 w-4 text-gray-500" />
+                              {lead.country || '-'}
+                            </div>
+                            <div className="mt-1 text-gray-500">
+                              {lead.city || '-'}
+                            </div>
+                          </td>
                           <td className="px-3 py-5 text-sm whitespace-nowrap text-gray-500">{lead.lead_email || '-'}</td>
-                          <td className="px-3 py-5 text-sm whitespace-nowrap text-gray-500">{lead.role || '-'}</td>
-                          <td className="relative py-5 pr-4 pl-3 text-right text-sm font-medium whitespace-nowrap sm:pr-0">
-                            <a href="#" className="text-indigo-600 hover:text-indigo-900">
-                              Edit<span className="sr-only">, {lead.full_name}</span>
-                            </a>
-                </td>
               </tr>
             ))}
           </tbody>

@@ -888,10 +888,10 @@ export default function OnboardingPage() {
               <div className="flex justify-center">
                 <img
                   alt="Lead card"
-                  src="/lead-card.webp"
-                  width={900}
-                  height={600}
-                  className="w-[48rem] max-w-full rounded-md shadow-xl ring-1 ring-gray-900/10 mx-auto"
+                  src="/preview.png"
+                  width={1920}
+                  height={1000}
+                  className="w-screen h-auto rounded-md shadow-xl ring-1 ring-gray-900/10 mx-auto"
                 />
               </div>
             </div>
@@ -903,8 +903,8 @@ export default function OnboardingPage() {
          {/* <FeaturesSection /> */}
          <TestimonialsSection />
          <BoostCTA />
-         <PricingComponent />
-         <FAQSection />
+         {/*<PricingComponent />*/}
+         {/*<FAQSection />*/}
         
       </div>
       {/* Footer with social icons */}
