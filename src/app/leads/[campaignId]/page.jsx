@@ -23,34 +23,16 @@ const userNavigation = [
   { name: 'Sign out', href: '#' },
 ];
 
-function classNames(...classes: string[]) {
+function classNames(...classes) {
   return classes.filter(Boolean).join(' ');
 }
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 const supabase = createClient(supabaseUrl, supabaseKey);
 
-type Lead = {
-  id: string;
-  full_name?: string;
-  job_title?: string;
-  company_name?: string;
-  department?: string;
-  lead_email?: string;
-  role?: string;
-  photo_url?: string;
-  company_website?: string;
-  headline?: string;
-  company_linkedin_url?: string;
-  linkedin_url?: string;
-  country?: string;
-  city?: string;
-  // add other fields as needed
-};
-
 // Add LinkedIn SVG icon
-function LinkedInIcon(props: React.SVGProps<SVGSVGElement>) {
+function LinkedInIcon(props) {
   return (
     <svg fill="currentColor" viewBox="0 0 24 24" {...props}>
       <path d="M19 0h-14c-2.76 0-5 2.24-5 5v14c0 2.76 2.24 5 5 5h14c2.76 0 5-2.24 5-5v-14c0-2.76-2.24-5-5-5zm-11 19h-3v-9h3v9zm-1.5-10.28c-.97 0-1.75-.79-1.75-1.75s.78-1.75 1.75-1.75 1.75.79 1.75 1.75-.78 1.75-1.75 1.75zm13.5 10.28h-3v-4.5c0-1.08-.02-2.47-1.5-2.47-1.5 0-1.73 1.17-1.73 2.39v4.58h-3v-9h2.89v1.23h.04c.4-.75 1.38-1.54 2.84-1.54 3.04 0 3.6 2 3.6 4.59v4.72z" />
@@ -59,7 +41,7 @@ function LinkedInIcon(props: React.SVGProps<SVGSVGElement>) {
 }
 
 // Add Location SVG icon
-function LocationIcon(props: React.SVGProps<SVGSVGElement>) {
+function LocationIcon(props) {
   return (
     <svg fill="currentColor" viewBox="0 0 20 20" {...props}>
       <path fillRule="evenodd" d="M10 2a6 6 0 00-6 6c0 4.418 5.373 9.293 5.601 9.507a1 1 0 001.398 0C10.627 17.293 16 12.418 16 8a6 6 0 00-6-6zm0 8a2 2 0 110-4 2 2 0 010 4z" clipRule="evenodd" />
@@ -68,7 +50,7 @@ function LocationIcon(props: React.SVGProps<SVGSVGElement>) {
 }
 
 // Next.js 15: params and searchParams are plain objects, not Promises
-export default async function LeadsPage({ params, searchParams }: { params: { campaignId: string }, searchParams?: { page?: string } }) {
+export default async function LeadsPage({ params, searchParams }) {
   const { campaignId } = params;
   const page = searchParams?.page ? parseInt(searchParams.page, 10) : 1;
   const LEADS_PER_PAGE = 100;
@@ -90,7 +72,7 @@ export default async function LeadsPage({ params, searchParams }: { params: { ca
     .eq('campaign_id', campaignId)
     .order('created_at', { ascending: false })
     .range(from, to);
-  const error = unknownError as unknown;
+  const error = unknownError;
 
   if (error || campaignError) return notFound();
 
@@ -146,7 +128,7 @@ export default async function LeadsPage({ params, searchParams }: { params: { ca
             </tr>
           </thead>
                     <tbody className="divide-y divide-gray-200 bg-white">
-                      {leads.map((lead: Lead) => (
+                      {leads.map((lead) => (
                         <tr key={lead.id}>
                           <td className="py-5 pr-3 pl-4 text-sm whitespace-nowrap sm:pl-0">
                             <div className="flex items-center">
@@ -155,7 +137,7 @@ export default async function LeadsPage({ params, searchParams }: { params: { ca
                                   <img alt="" src={lead.photo_url} className="size-11 rounded-full object-cover" />
                   ) : (
                                   <div className="size-11 rounded-full bg-gray-200 flex items-center justify-center text-gray-400 text-xs font-bold">
-                                    {lead.full_name ? lead.full_name.split(' ').map((n: string) => n[0]).join('').slice(0,2).toUpperCase() : '?'}
+                                    {lead.full_name ? lead.full_name.split(' ').map((n) => n[0]).join('').slice(0,2).toUpperCase() : '?'}
                     </div>
                   )}
                               </div>
