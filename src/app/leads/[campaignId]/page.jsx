@@ -207,24 +207,26 @@ export default async function LeadsPage({ params, searchParams }) {
             </div>
           </div>
         </main>
-        {/* After the table, add pagination controls as links */}
-        <div className="flex justify-center items-center gap-4 mt-6">
-          <a
-            href={`?page=${page - 1}`}
-            className={`px-4 py-2 rounded bg-gray-800 text-white ${page === 1 ? 'opacity-50 pointer-events-none' : ''}`}
-            aria-disabled={page === 1}
-          >
-            Previous
-          </a>
-          <span className="text-gray-700">Page {page} of {totalPages}</span>
-          <a
-            href={`?page=${page + 1}`}
-            className={`px-4 py-2 rounded bg-gray-800 text-white ${page === totalPages ? 'opacity-50 pointer-events-none' : ''}`}
-            aria-disabled={page === totalPages}
-          >
-            Next
-          </a>
-        </div>
+        {/* Only show pagination if leads exist and leads.length > 0 */}
+        {leads && leads.length > 0 && (
+          <div className="flex justify-center items-center gap-4 mt-6">
+            <a
+              href={`?page=${page - 1}`}
+              className={`px-4 py-2 rounded bg-gray-800 text-white ${page === 1 ? 'opacity-50 pointer-events-none' : ''}`}
+              aria-disabled={page === 1}
+            >
+              Previous
+            </a>
+            <span className="text-gray-700">Page {page} of {totalPages}</span>
+            <a
+              href={`?page=${page + 1}`}
+              className={`px-4 py-2 rounded bg-gray-800 text-white ${page === totalPages ? 'opacity-50 pointer-events-none' : ''}`}
+              aria-disabled={page === totalPages}
+            >
+              Next
+            </a>
+          </div>
+        )}
         {/* After the pagination controls, add a div with mb-16 for whitespace */}
         <div className="mb-16" />
     </div>
