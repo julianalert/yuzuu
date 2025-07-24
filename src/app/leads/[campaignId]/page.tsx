@@ -123,7 +123,7 @@ export default async function LeadsPage({ params, searchParams }: { params: { ca
                     <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
                   </svg>
                   <div className="text-center text-gray-700 text-lg font-medium max-w-md">
-                    We are getting your leads ready. <br />You will receive them by email in the coming hour. <br />You can close this tab.
+                    We're getting your leads ready. <br />You will receive them by email in the coming hour. <br />You can close this tab.
                   </div>
                 </div>
               ) : (
