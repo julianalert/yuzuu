@@ -70,6 +70,7 @@ export default async function LeadsPage({ params, searchParams }) {
     .from('leads')
     .select('*', { count: 'exact' })
     .eq('campaign_id', campaignId)
+    .eq('sent', 'yes')
     .order('created_at', { ascending: false })
     .range(from, to);
   const error = unknownError;
